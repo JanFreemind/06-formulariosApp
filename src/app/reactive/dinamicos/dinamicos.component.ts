@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-dinamicos',
@@ -15,7 +15,9 @@ export class DinamicosComponent {
       [ 'Metal Gear', Validators.required ], 
       [ 'Death Stranding', Validators.required],
     ], Validators.required )
-  })
+  });
+
+  nuevoFavorito: FormControl = this.fb.control('', Validators.required );
 
   get favoritosArr(){
     return this.miFormulario.get('favoritos') as FormArray;
@@ -28,6 +30,18 @@ export class DinamicosComponent {
             && this.miFormulario.controls[campo].touched;
   }
 
+  agregarFavorito() {
+    if( this.nuevoFavorito.invalid ) {
+      return;
+    }
+    //Las dos formas son validas, mediante form control y mediante form builder
+    //this.favoritosArr.push( new FormControl( this.nuevoFavorito.value, Validators.required ) );
+    this.favoritosArr.push( this.fb.control( this.nuevoFavorito.value, Validators.required ) );
+
+    this.nuevoFavorito.reset();
+
+  }
+
   guardar() {
 
     if ( this.miFormulario.invalid ) {
@@ -35,6 +49,7 @@ export class DinamicosComponent {
       return;
     }
     console.log(this.miFormulario.value);
+
   }
 
 }
