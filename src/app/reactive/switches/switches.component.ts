@@ -26,7 +26,20 @@ export class SwitchesComponent implements OnInit {
     this.miFormulario.reset({
       ...this.persona,
       condiciones: false
-     });    
+     });
+
+     this.miFormulario.valueChanges.subscribe( ({ condiciones, ...rest }) => {
+       this.persona = rest;
+     })
+  }
+
+  guardar() {
+
+    const formValue = {...this.miFormulario.value };
+    delete formValue.condiciones;
+
+    this.persona = formValue;
+
   }
 
 }
