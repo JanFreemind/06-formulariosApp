@@ -1,5 +1,7 @@
+import { ConditionalExpr } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { TemplateRoutingModule } from '../../../template/template-routing.module';
 
 @Component({
   selector: 'app-registro',
@@ -13,9 +15,23 @@ export class RegistroComponent implements OnInit {
   nombreApellidoPattern: string = '([a-zA-Z]+) ([a-zA-Z]+)';
   emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
+  noPuedeSerStrider( control: FormControl ) {
+    const valor = control.value?.trim().toLowerCase();
+    if ( valor === 'strider' ) {
+      //return ERROR
+      return {
+        noStrider: true
+      }
+    }
+
+    return null;
+    
+  }
+
   miFormulario: FormGroup = this.fb.group({
     nombre: ['', [ Validators.required, Validators.pattern( this.nombreApellidoPattern ) ]],
-    email: ['', [ Validators.required, Validators.pattern( this.emailPattern ) ]]
+    email: ['', [ Validators.required, Validators.pattern( this.emailPattern ) ]],
+    username: ['', [ Validators.required, this.noPuedeSerStrider ]]
   })
 
   constructor( private fb: FormBuilder ) { }
@@ -23,7 +39,8 @@ export class RegistroComponent implements OnInit {
   ngOnInit(): void {
     this.miFormulario.reset({
       nombre: 'Jan Freemind',
-      email: 'test1@test.com'
+      email: 'test1@test.com',
+      username: 'Jperez'
     })
   }
 
