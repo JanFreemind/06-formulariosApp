@@ -31,7 +31,9 @@ export class RegistroComponent implements OnInit {
     this.miFormulario.reset({
       nombre: 'Jan Freemind',
       email: 'test1@test.com',
-      username: 'Jperez'
+      username: 'Jperez',
+      password: '123456',
+      password2: '123456'
     })
   }
 
